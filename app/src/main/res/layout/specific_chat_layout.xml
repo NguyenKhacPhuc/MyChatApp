@@ -42,7 +42,7 @@
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="510dp"
+        android:layout_height="300dp"
         android:id="@+id/chatContentlayout"
         android:layout_below="@+id/in4_chat">
     <androidx.recyclerview.widget.RecyclerView

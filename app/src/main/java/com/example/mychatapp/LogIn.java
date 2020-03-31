@@ -72,7 +72,6 @@ public class LogIn extends AppCompatActivity {
                                 intent.putExtra("bunUserName",bundle);
                                 startActivity(intent);
                             }
-                            Toast.makeText(LogIn.this,"Your password is incorrect",Toast.LENGTH_SHORT).show();
                         }
                         else {
                             Toast.makeText(LogIn.this,"Account is not exist",Toast.LENGTH_SHORT).show();

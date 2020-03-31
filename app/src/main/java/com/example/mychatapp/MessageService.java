@@ -41,7 +41,8 @@ public class MessageService extends FirebaseMessagingService {
         notificationChannel.setLightColor(Color.BLUE);
         notificationChannel.setVibrationPattern(new long[] {0,1000,500,1000});
         notificationChannel.enableVibration(true);
-        notificationManager.createNotificationChannel(notificationChannel);
+            assert notificationManager != null;
+            notificationManager.createNotificationChannel(notificationChannel);
         }
         NotificationCompat.Builder notifcationBuilder = new NotificationCompat.Builder(this,notification_channel_id);
         notifcationBuilder.setAutoCancel(true)
@@ -51,6 +52,7 @@ public class MessageService extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentInfo("In4");
+        assert notificationManager != null;
         notificationManager.notify(new Random().nextInt(),notifcationBuilder.build());
     }
 
