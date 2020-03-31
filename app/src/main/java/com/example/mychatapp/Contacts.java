@@ -1,18 +1,19 @@
 package com.example.mychatapp;
 
 public class Contacts {
-    private int avatarImage;
+    private String avatarImage;
     private String phoneNumber;
     private String bio;
     private String userName;
 
-    public Contacts(int avatarImage, String phoneNumber,String userName){
+    public Contacts(String avatarImage, String phoneNumber,String userName){
 
         this.avatarImage = avatarImage;
         this.phoneNumber = phoneNumber;
 
         this.userName = userName;
     }
+
 
     public String getUserName() {
         return userName;
@@ -30,11 +31,11 @@ public class Contacts {
         this.bio = bio;
     }
 
-    public int getAvatarImage() {
+    public String getAvatarImage() {
         return avatarImage;
     }
 
-    public void setAvatarImage(int avatarImage) {
+    public void setAvatarImage(String avatarImage) {
         this.avatarImage = avatarImage;
     }
 

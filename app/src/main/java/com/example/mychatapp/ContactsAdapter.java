@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserViewHolder> {
@@ -33,7 +35,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserVi
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
             holder.name.setText(contacts.get(position).getUserName());
             holder.number.setText(contacts.get(position).getPhoneNumber());
-            holder.avatar.setImageResource(contacts.get(position).getAvatarImage());
+            Picasso.get().load(contacts.get(position).getAvatarImage()).into(holder.avatar);
     }
 
     @Override

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.icu.text.RelativeDateTimeFormatter;
 import android.os.Bundle;
 
 
@@ -12,7 +13,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private Intent intent;
+    private Intent intent = getIntent();
+    private Bundle currentBunUsername = intent.getBundleExtra("bunUserName");
+    private  String currentUserName = currentBunUsername.getString("currentUserName");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,25 +24,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigtion_bottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.content,
                     new contact_fragment()).commit();
         }
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
+
         Fragment chosenFrag = null;
+
         switch (menuItem.getItemId()){
             case R.id.contact:
-                chosenFrag = new contact_fragment();
-                break;
-            case R.id.chat:
-                intent = getIntent();
-                Bundle currentBunUsername = intent.getBundleExtra("bunUserName");
-                String currentUserName = currentBunUsername.getString("currentUserName");
                 Bundle bundle = new Bundle();
                 bundle.putString("currentUserName",currentUserName);
-                chosenFrag = new chat_fragment();
+                chosenFrag = new contact_fragment();
                 chosenFrag.setArguments(bundle);
+                break;
+            case R.id.chat:
+                Bundle bundleChat = new Bundle();
+                bundleChat.putString("currentUserName",currentUserName);
+                chosenFrag = new chat_fragment();
+                chosenFrag.setArguments(bundleChat);
                 break;
             case R.id.call:
                 chosenFrag = new call_fragment();

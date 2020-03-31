@@ -25,6 +25,7 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.chat_fragment,container,false);
         recyclerView = (RecyclerView) view.findViewById(R.id.listChats);
+        assert getArguments() != null;
         currentUserName = getArguments().getString("currentUserName");
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
