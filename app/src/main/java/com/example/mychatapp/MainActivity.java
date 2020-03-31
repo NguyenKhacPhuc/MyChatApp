@@ -13,9 +13,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
-    private Intent intent = getIntent();
-    private Bundle currentBunUsername = intent.getBundleExtra("bunUserName");
-    private  String currentUserName = currentBunUsername.getString("currentUserName");
+    private Intent intent ;
+    private Bundle currentBunUsername ;
+    private  String currentUserName ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +23,17 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigtion_bottom);
+        intent = getIntent();
+        currentBunUsername = intent.getBundleExtra("bunUserName");
+        assert currentBunUsername != null;
+        currentUserName = currentBunUsername.getString("currentUserName");
+
         bottomNavigationView.setOnNavigationItemSelectedListener(navListener);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.content,
-                    new contact_fragment()).commit();
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.content,
+//                    new contact_fragment()).commit();
+//        }
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
 
