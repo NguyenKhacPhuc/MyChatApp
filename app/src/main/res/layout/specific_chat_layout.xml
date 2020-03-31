@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+   >
+
+    <RelativeLayout
+        android:id="@+id/in4_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"
+       >
+
+        <TextView
+            android:id="@+id/current_username_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/andada"
+            android:text="Linh Chii"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="30sp" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/current_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/toanaa" />
+
+        <Button
+            android:id="@+id/backToChatList"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/andada"
+            android:hint="Chats"
+            android:textColorHint="@android:color/holo_blue_dark"
+            android:textSize="20sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="510dp"
+        android:id="@+id/chatContentlayout"
+        android:layout_below="@+id/in4_chat">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        />
+<!--        <TextView-->
+<!--            android:id="@+id/current_chat_date"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/round"-->
+<!--            android:layout_above="@+id/chatContent"-->
+<!--            android:text="19/03/2102"-->
+<!--            android:layout_centerHorizontal="true"/>-->
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chatContentlayout">
+        <RelativeLayout
+            android:id="@+id/inbox_field"
+            android:layout_width="350dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_centerInParent="true">
+        <EditText
+            android:id="@+id/MessageInput"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:background="@drawable/round"
+            android:hint="Message"
+            />
+            <ImageButton
+                android:id="@+id/send_btn"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/send"
+                android:layout_alignParentEnd="true"
+                style="?android:attr/borderlessButtonStyle"
+                />
+
+        </RelativeLayout>
+        <ImageButton
+            android:id="@+id/record"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/mic"
+          android:layout_alignParentEnd="true"
+            style="?android:attr/borderlessButtonStyle"/>
+        <ImageButton
+            android:id="@+id/attach_file"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/attach"
+            style="?android:attr/borderlessButtonStyle"/>
+    </RelativeLayout>
+
+</RelativeLayout>

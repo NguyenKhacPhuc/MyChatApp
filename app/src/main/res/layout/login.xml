@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light"
+   >
+
+    <TextView
+        android:id="@+id/labled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:fontFamily="@font/andada"
+        android:text="Millenium"
+        android:textColor="@android:color/background_light"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/username_lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/labled"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/average"
+        android:text="USERNAME"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+    <EditText
+        android:id="@+id/input_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/username_lable"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="12dp"
+        android:hint="Enter username"/>
+    <TextView
+        android:id="@+id/password_lable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_username"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/average"
+        android:text="PASSWORD"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+    <EditText
+        android:id="@+id/input_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/password_lable"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="12dp"
+        android:hint="Enter password"/>
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_password"
+        android:background="#00838F"
+        android:text="Log in"
+        android:gravity="center"
+        android:fontFamily="@font/andada"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="60dp"
+        style="?android:attr/borderlessButtonStyle"
+        />
+    <Button
+        android:id="@+id/create_new_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Create new account"
+        android:fontFamily="@font/andada"
+        android:textColor="@color/cardview_light_background"
+        android:layout_below="@id/btnLogin"
+        android:background="@android:color/holo_blue_light"
+        android:layout_marginTop="30dp"
+        style="?android:attr/borderlessButtonStyle"
+        />
+</RelativeLayout>

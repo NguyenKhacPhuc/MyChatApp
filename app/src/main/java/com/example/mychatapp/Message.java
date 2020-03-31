@@ -1,0 +1,48 @@
+package com.example.mychatapp;
+
+import androidx.annotation.NonNull;
+
+public class Message {
+    private String Sender;
+    private String Receiver;
+    private String Message;
+
+    public Message(String sender, String receiver, String message) {
+        this.Sender = sender;
+        this.Receiver = receiver;
+        this.Message = message;
+    }
+    public Message(){
+
+    }
+
+    public String getSender() {
+        return Sender;
+    }
+
+    public void setSender(String sender) {
+        this.Sender = sender;
+    }
+
+    public String getReceiver() {
+        return Receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        this.Receiver = receiver;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        this.Message = message;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.Message+ " " + this.Sender + " " + this.Receiver;
+    }
+}
