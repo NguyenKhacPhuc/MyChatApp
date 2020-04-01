@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.math.BigInteger;
@@ -80,15 +81,9 @@ public class SignUp extends AppCompatActivity {
                     }).addOnFailureListener(e -> {
                         Log.d("Tag2", "Save failed");
                     });
-
-                    firebaseAuth.createUserWithEmailAndPassword(signUpEmail,hashPass).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
-                        Toast.makeText(SignUp.this,"Create account successful",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(SignUp.this,LogIn.class));
-                    }else{
-                        Toast.makeText(SignUp.this,"Error Occured",Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    FirebaseFirestore.getInstance().collection("UserNameList")
+                            .document("UList")
+                            .update("ListOfUserName", FieldValue.arrayUnion(currentuserName));
                 }
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
