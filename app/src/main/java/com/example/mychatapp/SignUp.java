@@ -62,6 +62,7 @@ public class SignUp extends AppCompatActivity {
                 if(check){
                     String currentuserName = userName.getText().toString();
                     String userEmail = email.getText().toString();
+                    String defaultAvatar = "https://firebasestorage.googleapis.com/v0/b/my-chat-app-4ccd9.appspot.com/o/%E2%80%94Pngtree%E2%80%94web%20page%20ui%20default%20avatar_3801746.png?alt=media&token=c0800c09-7885-40d5-a9dd-a10a3c98ac5c";
                     String userPhoneNumber = phoneNumber.getText().toString();
                     Date userBirthday = extractDate(birthday);
 
@@ -74,6 +75,7 @@ public class SignUp extends AppCompatActivity {
                     user.put("Password",hashPass);
                     user.put("Contacts", contactsList);
                     user.put("Chat History",chatHistory);
+                    user.put("Avatar",defaultAvatar);
 
                     databaseReference = FirebaseFirestore.getInstance().document("User/"+currentuserName);
                     databaseReference.set(user).addOnSuccessListener(aVoid -> {

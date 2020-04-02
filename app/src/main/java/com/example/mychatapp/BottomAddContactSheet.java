@@ -1,6 +1,7 @@
 package com.example.mychatapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,15 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.firebase.FirebaseApp;
+
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class BottomAddContactSheet extends BottomSheetDialogFragment {
     private Button createContact;
@@ -22,6 +28,7 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
     private String additionPhoneNumber;
     private EditText newUserName;
     private EditText newPhoneNumber;
+    private ArrayList<String> userNamelst;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -30,18 +37,49 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
         createContact = (Button) v.findViewById(R.id.create_contact_btn);
         newUserName = v.findViewById(R.id.new_contact_username);
         newPhoneNumber = v.findViewById(R.id.new_contact_phoneNumber);
+         userNamelst = new ArrayList<>();
         assert getArguments() != null;
         currentUserName = getArguments().getString("currentUserName");
         createContact.setOnClickListener(v1 -> {
             additionUserName = newUserName.getText().toString();
             additionPhoneNumber = newPhoneNumber.getText().toString();
             //TODO check the userName in database.
+            FirebaseFirestore.getInstance().collection("UserNameList")
+                    .document("UList").get()
+                    .addOnCompleteListener(task -> {
+                        DocumentSnapshot documentSnapshot = task.getResult();
+                        assert documentSnapshot != null;
+                        Map<String,Object> map = documentSnapshot.getData();
+                        assert map != null;
+                        for(Map.Entry<String, Object> entry : map.entrySet()){
+                            if(entry.getKey().equals("ListOfUserName")){
+                                ArrayList<String> userNameList = (ArrayList<String>) entry.getValue();
+                                userNamelst.addAll(userNameList);
+                                Log.d("username", userNamelst.toString());
+                                handleUserNameConditiontoAdd(userNameList);
+                            }
+                        }
+                    });
 
-            //add contact to database if user exist.
-            FirebaseFirestore.getInstance().collection("User")
-                    .document(currentUserName)
-                    .update("Contacts", FieldValue.arrayUnion());
         });
         return v;
+    }
+
+    private void handleUserNameConditiontoAdd(ArrayList<String> userNameList) {
+        //add contact to database if user exist.
+        boolean check = false;
+        for (String s : userNameList){
+            if(additionUserName.equals(s)){
+                newUserName.requestFocus();
+                newUserName.setError("Username is already exist");
+                check = true;
+                break;
+            }
+        }
+        if(!check) {
+            FirebaseFirestore.getInstance().collection("User")
+                    .document(currentUserName)
+                    .update("Contacts", FieldValue.arrayUnion(additionUserName));
+        }
     }
 }
