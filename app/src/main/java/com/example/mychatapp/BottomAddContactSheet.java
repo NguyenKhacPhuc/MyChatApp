@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -70,16 +71,25 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
         boolean check = false;
         for (String s : userNameList){
             if(additionUserName.equals(s)){
-                newUserName.requestFocus();
-                newUserName.setError("Username is already exist");
+                FirebaseFirestore.getInstance().document("User/"+additionUserName).get().addOnSuccessListener(documentSnapshot -> {
+                    String avatar = documentSnapshot.getString("Avatar");
+                    String phoneNumber = documentSnapshot.getString("Phone number");
+                    Contacts newContacts = new Contacts(avatar,phoneNumber,additionUserName);
+                    addContact(newContacts);
+                });
                 check = true;
                 break;
             }
         }
         if(!check) {
-            FirebaseFirestore.getInstance().collection("User")
-                    .document(currentUserName)
-                    .update("Contacts", FieldValue.arrayUnion(additionUserName));
+            newUserName.requestFocus();
+            newUserName.setError("Username is not exist");
         }
+    }
+
+    private void addContact(Contacts newContacts) {
+        FirebaseFirestore.getInstance().collection("User")
+                .document(currentUserName)
+                .update("Contacts", FieldValue.arrayUnion(newContacts));
     }
 }

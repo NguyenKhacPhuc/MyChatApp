@@ -13,9 +13,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class contact_fragment extends Fragment {
     RecyclerView recyclerView;
@@ -47,14 +54,36 @@ public class contact_fragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
+        FirebaseFirestore.getInstance().document("User/"+currentUserName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    DocumentSnapshot documentSnapshot = task.getResult();
+                    assert documentSnapshot != null;
+                    Map<String,Object> data = documentSnapshot.getData();
+                assert data != null;
+                for(Map.Entry<String, Object> entry : data.entrySet()){
+                        if(entry.getKey().equals("Contacts")){
+                            ArrayList<HashMap<String,Object>> dtbContacts = (ArrayList<HashMap<String,Object>>) entry.getValue();
+                            for(HashMap<String,Object> dtb : dtbContacts){
+                                String avatar = dtb.get("avatarImage").toString();
+                                String phoneNumber = dtb.get("phoneNumber").toString();
+                                String username = dtb.get("userName").toString();
+                                Contacts contact = new Contacts(avatar,phoneNumber,username);
+                                contacts.add(contact);
+                            }
+                        }
+                    }
+                ContactsAdapter contactsAdapter = new ContactsAdapter(contacts,getContext());
+                recyclerView.setAdapter(contactsAdapter);
+            }
+        });
+
+//        contacts.add(new Contacts("https://firebasestorage.googleapis.com/v0/b/my-chat-app-4ccd9.appspot.com/o/question-mark-483x335.jpg?alt=media&token=d93882bb-56a3-4fc0-9983-990256c01470"
+//                ,"0834222439"
+//                ,"phucnguyen"));
 
 
-        contacts.add(new Contacts("https://firebasestorage.googleapis.com/v0/b/my-chat-app-4ccd9.appspot.com/o/question-mark-483x335.jpg?alt=media&token=d93882bb-56a3-4fc0-9983-990256c01470"
-                ,"0834222439"
-                ,"phucnguyen"));
-
-        ContactsAdapter contactsAdapter = new ContactsAdapter(contacts,getContext());
-        recyclerView.setAdapter(contactsAdapter);
         return view;
     }
 }
