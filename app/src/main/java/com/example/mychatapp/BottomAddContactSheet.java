@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class BottomAddContactSheet extends BottomSheetDialogFragment {
     private Button createContact;
+    private Button cancel;
     private String currentUserName;
     private String additionUserName;
     private String additionPhoneNumber;
@@ -38,6 +39,7 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
         createContact = (Button) v.findViewById(R.id.create_contact_btn);
         newUserName = v.findViewById(R.id.new_contact_username);
         newPhoneNumber = v.findViewById(R.id.new_contact_phoneNumber);
+        cancel = v.findViewById(R.id.cancel_add_contact_btn);
          userNamelst = new ArrayList<>();
         assert getArguments() != null;
         currentUserName = getArguments().getString("currentUserName");
@@ -62,6 +64,9 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
                         }
                     });
 
+        });
+        cancel.setOnClickListener(clickCancel ->{
+            dismiss();
         });
         return v;
     }

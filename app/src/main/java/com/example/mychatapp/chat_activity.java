@@ -102,7 +102,7 @@ public class chat_activity extends AppCompatActivity {
         Message mess = new Message(userName,opponentUserNameString,content);
         messages.add(mess);
         databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
-        databaseReference.update("Chat History", FieldValue.arrayUnion(mess));
+        databaseReference.update("Chat History."+opponentUserNameString, FieldValue.arrayUnion(mess));
         FirebaseFirestore.getInstance().document("Chat/"+userName).set(mess);
     }
 //    private void readMessage(){
