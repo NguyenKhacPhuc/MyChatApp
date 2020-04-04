@@ -2,6 +2,7 @@ package com.example.mychatapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.onItemListener {
      ArrayList<Chat> chats;
@@ -43,11 +46,18 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
             Map<String,Object> allData =  documentSnapshot.getData();
             assert allData != null;
             for (Map.Entry<String,Object> data: allData.entrySet()){
+                    if(data.getKey().equals("Chat History")){
+                        HashMap<String, Object> messagesBox = (HashMap<String, Object>) data.getValue();
+                        AtomicInteger count = new AtomicInteger();
+                        messagesBox.forEach((k,v)->{
+                            count.getAndIncrement();
+                                    convertToChat(v.toString());
 
+                        });
+                    }
             }
         });
-        ChatsAdapter chatsAdapter = new ChatsAdapter(chats,getContext(),this);
-        recyclerView.setAdapter(chatsAdapter);
+
         return view;
     }
 
@@ -59,5 +69,23 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
        bundle.putString("currentUserName",currentUserName);
        intent.putExtra("bun", bundle);
        startActivity(intent);
+    }
+    private void convertToChat(String s){
+        s = s.replace("[{","");
+        s = s.replace("}]","");
+        String[] strings = s.split(", ");
+        String receiver = strings[0].replace("receiver=","");
+        String message = strings[2].replace("message=","");
+        FirebaseFirestore.getInstance().document("User/"+receiver).get().addOnCompleteListener(task -> {
+            DocumentSnapshot documentSnapshot = task.getResult();
+            assert documentSnapshot != null;
+            String avatar = documentSnapshot.getString("Avatar");
+            Chat c = new Chat(receiver,message,avatar);
+            Log.d("chat", c.toString());
+            chats.add(c);
+            ChatsAdapter chatsAdapter = new ChatsAdapter(chats,getContext(),this);
+            recyclerView.setAdapter(chatsAdapter);
+        });
+
     }
 }

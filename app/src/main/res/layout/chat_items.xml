@@ -38,12 +38,6 @@
             android:layout_height="wrap_content"
             android:text="Hello"
             android:layout_below="@+id/chat_name"/>
-        <TextView
-            android:id="@+id/chat_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="15/03/2020"/>
     </RelativeLayout>
     <View
         android:id="@+id/chat_divider"

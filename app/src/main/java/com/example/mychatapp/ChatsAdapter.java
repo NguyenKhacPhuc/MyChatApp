@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,8 +39,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatHolder> 
     public void onBindViewHolder(@NonNull ChatHolder holder, int position) {
             holder.username.setText(chats.get(position).getUsername());
             holder.lastMessage.setText(chats.get(position).getLastMessage());
-            holder.date.setText(chats.get(position).getDate());
-            holder.avatar.setImageResource(chats.get(position).getAvatar());
+            Picasso.get().load(chats.get(position).getAvatar()).into(holder.avatar);
 
     }
 
@@ -57,7 +58,6 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatHolder> 
             super(itemView);
             username = (TextView) itemView.findViewById(R.id.chat_name);
             lastMessage = (TextView) itemView.findViewById(R.id.chat_last_message);
-            date = (TextView) itemView.findViewById(R.id.chat_date);
             avatar =(CircleImageView) itemView.findViewById(R.id.chat_avatar);
             this.onItemListener = onItemListener;
             itemView.setOnClickListener(this);

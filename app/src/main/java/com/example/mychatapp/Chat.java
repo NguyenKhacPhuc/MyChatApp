@@ -3,13 +3,11 @@ package com.example.mychatapp;
 public class Chat  {
     private String username;
     private String lastMessage;
-    private String date;
-    private int avatar;
+    private String avatar;
 
-    public Chat(String username, String lastMessage, String date,int avatar) {
+    public Chat(String username, String lastMessage,String avatar) {
         this.username = username;
         this.lastMessage = lastMessage;
-        this.date = date;
         this.avatar = avatar;
     }
 
@@ -29,19 +27,11 @@ public class Chat  {
         this.lastMessage = lastMessage;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public int getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(int avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 }
