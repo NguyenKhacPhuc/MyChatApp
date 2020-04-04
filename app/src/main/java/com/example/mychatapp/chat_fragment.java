@@ -52,7 +52,6 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
                         messagesBox.forEach((k,v)->{
                             count.getAndIncrement();
                                     convertToChat(v.toString());
-
                         });
                     }
             }
@@ -76,6 +75,7 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
         String[] strings = s.split(", ");
         String receiver = strings[0].replace("receiver=","");
         String message = strings[2].replace("message=","");
+
         FirebaseFirestore.getInstance().document("User/"+receiver).get().addOnCompleteListener(task -> {
             DocumentSnapshot documentSnapshot = task.getResult();
             assert documentSnapshot != null;
