@@ -12,7 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.onItemListener {
      ArrayList<Chat> chats;
@@ -31,13 +37,15 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
         chats = new ArrayList<>();
-        chats.add(new Chat("Phuc","hi","12/2/2020",R.drawable.toanaa));
-        chats.add(new Chat("Nam","hello","",R.drawable.toanaa));
-        chats.add(new Chat("Hiep","how are you","12/2/2020",R.drawable.toanaa));
-        chats.add(new Chat("Co","Phuc oi!!","20/3/2020",R.drawable.toanaa));
-        chats.add(new Chat("Hen","Cai gi","12/3/2020",R.drawable.toanaa));
-        chats.add(new Chat("Dat","Khong co gi","12/12/2020",R.drawable.toanaa));
-        chats.add(new Chat("phucnguyen","Testing","12/12/2020",R.drawable.toanaa));
+        FirebaseFirestore.getInstance().document("User/"+currentUserName).get().addOnCompleteListener(task -> {
+            DocumentSnapshot documentSnapshot = task.getResult();
+            assert documentSnapshot != null;
+            Map<String,Object> allData =  documentSnapshot.getData();
+            assert allData != null;
+            for (Map.Entry<String,Object> data: allData.entrySet()){
+
+            }
+        });
         ChatsAdapter chatsAdapter = new ChatsAdapter(chats,getContext(),this);
         recyclerView.setAdapter(chatsAdapter);
         return view;
