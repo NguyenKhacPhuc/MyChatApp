@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,14 +50,20 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
             Map<String,Object> allData =  documentSnapshot.getData();
             assert allData != null;
             for (Map.Entry<String,Object> data: allData.entrySet()){
-                    if(data.getKey().equals("Chat History")){
-                        HashMap<String, Object> messagesBox = (HashMap<String, Object>) data.getValue();
-                        AtomicInteger count = new AtomicInteger();
-                        messagesBox.forEach((k,v)->{
-                            count.getAndIncrement();
-                            Log.d("Testing",v.toString());
-                                    convertToChat(v.toString());
-                        });
+                    if(data.getKey().equals("Chat History")) {
+                        try {
+
+
+                            HashMap<String, Object> messagesBox = (HashMap<String, Object>) data.getValue();
+                            AtomicInteger count = new AtomicInteger();
+                            messagesBox.forEach((k, v) -> {
+                                count.getAndIncrement();
+                                Log.d("Testing", v.toString());
+                                convertToChat(v.toString());
+                            });
+                        }catch (ClassCastException e){
+                            Toast.makeText(getContext(),"You have no chat box yet",Toast.LENGTH_SHORT).show();
+                        }
                     }
             }
         });

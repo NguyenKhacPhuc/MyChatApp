@@ -63,7 +63,6 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
                             }
                         }
                     });
-
         });
         cancel.setOnClickListener(clickCancel ->{
             dismiss();
@@ -79,8 +78,14 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
                 FirebaseFirestore.getInstance().document("User/"+additionUserName).get().addOnSuccessListener(documentSnapshot -> {
                     String avatar = documentSnapshot.getString("Avatar");
                     String phoneNumber = documentSnapshot.getString("Phone number");
-                    Contacts newContacts = new Contacts(avatar,phoneNumber,additionUserName);
-                    addContact(newContacts);
+                    if(additionPhoneNumber.equals(phoneNumber)) {
+                        Contacts newContacts = new Contacts(avatar, phoneNumber, additionUserName);
+                        addContact(newContacts);
+                    }
+                    else{
+                        newPhoneNumber.requestFocus();
+                        newPhoneNumber.setError("Phone number is not correct");
+                    }
                 });
                 check = true;
                 break;
