@@ -14,5 +14,11 @@
         android:fontFamily="@font/andada"
         android:padding="5dp"
         android:gravity="left"
+        android:layout_toRightOf="@+id/avtImage"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avtImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         />
 </RelativeLayout>

@@ -99,11 +99,16 @@ public class chat_activity extends AppCompatActivity {
         chatDetails.put("Sender",userName);
         chatDetails.put("Receiver",opponentUserNameString);
         chatDetails.put("Message", content);
-        Message mess = new Message(userName,opponentUserNameString,content);
-        messages.add(mess);
-        databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
-        databaseReference.update("Chat History."+opponentUserNameString, FieldValue.arrayUnion(mess));
-        FirebaseFirestore.getInstance().document("Chat/"+userName).set(mess);
+        FirebaseFirestore.getInstance().document("User/"+opponentUserNameString).get().addOnCompleteListener(task->{
+            DocumentSnapshot documentSnapshot = task.getResult();
+            String avatar = documentSnapshot.getString("Avatar");
+            Message mess = new Message(userName,opponentUserNameString,content,avatar);
+            messages.add(mess);
+            databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
+            databaseReference.update("Chat History."+opponentUserNameString, FieldValue.arrayUnion(mess));
+            FirebaseFirestore.getInstance().document("Chat/"+userName).set(mess);
+        });
+
     }
 //    private void readMessage(){
 //        FirebaseFirestore.getInstance().collection("Chat").addSnapshotListener((queryDocumentSnapshots, e) -> {
@@ -127,9 +132,10 @@ public class chat_activity extends AppCompatActivity {
         String sender = documentSnapshot.getString("sender");
         String receiver = documentSnapshot.getString("receiver");
         String message = documentSnapshot.getString("message");
+        String avatar = documentSnapshot.getString("receiverAvatar");
         if(userName.equals(sender) && opponentUserNameString.equals(receiver)
                 || userName.equals(receiver) && opponentUserNameString.equals(sender)) {
-            Message mess = new Message(sender, receiver, message);
+            Message mess = new Message(sender, receiver, message,avatar);
             realtimeMess.add(mess);
         }
         messageAdapter = new MessageAdapter(getApplicationContext(),realtimeMess,userName,opponentUserNameString);

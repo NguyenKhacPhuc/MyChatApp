@@ -19,9 +19,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageHolder> {
@@ -61,6 +63,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
             Message message = messages.get(position);
             holder.showMessage.setText(message.getMessage());
+            Picasso.with(context).load(message.getReceiverAvatar()).into(holder.avatar);
     }
 
     @Override
@@ -70,11 +73,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
     public class MessageHolder extends RecyclerView.ViewHolder {
         TextView showMessage;
-
+        CircleImageView avatar;
 
         public MessageHolder(@NonNull View itemView) {
             super(itemView);
            showMessage = (TextView) itemView.findViewById(R.id.show_message);
+           avatar = (CircleImageView) itemView.findViewById(R.id.avtImage);
         }
     }
 

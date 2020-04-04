@@ -18,8 +18,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,6 +54,7 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
                         AtomicInteger count = new AtomicInteger();
                         messagesBox.forEach((k,v)->{
                             count.getAndIncrement();
+                            Log.d("Testing",v.toString());
                                     convertToChat(v.toString());
                         });
                     }
@@ -73,8 +77,9 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
         s = s.replace("[{","");
         s = s.replace("}]","");
         String[] strings = s.split(", ");
-        String receiver = strings[0].replace("receiver=","");
-        String message = strings[2].replace("message=","");
+        List<String> sc = Arrays.asList(strings);
+        String receiver = sc.get(0).replace("receiver=","");
+        String message = sc.get(sc.size()-1).replace("message=","");
 
         FirebaseFirestore.getInstance().document("User/"+receiver).get().addOnCompleteListener(task -> {
             DocumentSnapshot documentSnapshot = task.getResult();
