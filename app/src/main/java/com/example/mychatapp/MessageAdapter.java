@@ -31,10 +31,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     private final int  Right_MESSAGE_MARK = 1;
     private ArrayList<Message> messages;
     private Context context;
-    private FirebaseDatabase firebaseDatabase;
-    private String dtbSender;
     private String userName;
     private String receiver;
+    private boolean check;
 
     public MessageAdapter(Context context, ArrayList<Message> messages,String userName, String receiver){
         this.messages = messages;
@@ -63,7 +62,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
     public void onBindViewHolder(@NonNull MessageHolder holder, int position) {
             Message message = messages.get(position);
             holder.showMessage.setText(message.getMessage());
-            Picasso.with(context).load(message.getReceiverAvatar()).into(holder.avatar);
+            if(check) {
+                Picasso.with(context).load(message.getReceiverAvatar()).into(holder.avatar);
+            }
     }
 
     @Override
@@ -87,6 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         if(userName.equals(messages.get(position).getSender())){
             return Right_MESSAGE_MARK;
         }
+        check = true;
         return LEFT_MESSAGE_MARK;
     }
 }
