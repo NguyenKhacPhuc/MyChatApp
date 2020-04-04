@@ -136,8 +136,10 @@ public class chat_activity extends AppCompatActivity {
         String receiver = documentSnapshot.getString("receiver");
         String message = documentSnapshot.getString("message");
         String avatar = documentSnapshot.getString("receiverAvatar");
-        if(userName.equals(sender) && opponentUserNameString.equals(receiver)
-                || userName.equals(receiver) && opponentUserNameString.equals(sender)) {
+        if(userName.equals(sender) && opponentUserNameString.equals(receiver)) {
+            Message mess = new Message(sender, receiver, message);
+            realtimeMess.add(mess);
+        }else if(userName.equals(receiver) && opponentUserNameString.equals(sender)){
             Message mess = new Message(sender, receiver, message,avatar);
             realtimeMess.add(mess);
         }

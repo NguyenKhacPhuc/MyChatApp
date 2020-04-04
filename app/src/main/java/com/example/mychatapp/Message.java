@@ -17,6 +17,11 @@ public class Message {
     public Message(){
 
     }
+    public Message(String sender, String receiver, String message){
+        this.Sender = sender;
+        this.Receiver = receiver;
+        this.Message = message;
+    }
 
     public String getReceiverAvatar() {
         return receiverAvatar;
