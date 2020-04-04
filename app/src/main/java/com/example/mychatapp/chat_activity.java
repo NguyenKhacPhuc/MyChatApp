@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class chat_activity extends AppCompatActivity {
     private Intent intent;
     private ImageButton record;
     private TextView opponentUserName;
-    private CircleImageView avatar;
+    private CircleImageView avatarImage;
     private RecyclerView chatContent;
     private EditText inputMessage;
     private FirebaseUser firebaseUser;
@@ -85,7 +86,7 @@ public class chat_activity extends AppCompatActivity {
         backtoChat.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_chevron_left_black_24dp,0,0,0);
         send_btn  = (ImageButton) findViewById(R.id.send_btn);
         opponentUserName = (TextView)findViewById(R.id.current_username_chat);
-        avatar = (CircleImageView) findViewById(R.id.current_avatar);
+        avatarImage = (CircleImageView) findViewById(R.id.current_avatar);
         chatContent =(RecyclerView) findViewById(R.id.chatContent);
         attachFile = (ImageButton)  findViewById(R.id.attach_file);
         record = (ImageButton) findViewById(R.id.record);
@@ -101,7 +102,9 @@ public class chat_activity extends AppCompatActivity {
         chatDetails.put("Message", content);
         FirebaseFirestore.getInstance().document("User/"+opponentUserNameString).get().addOnCompleteListener(task->{
             DocumentSnapshot documentSnapshot = task.getResult();
+            assert documentSnapshot != null;
             String avatar = documentSnapshot.getString("Avatar");
+            Picasso.with(this).load(avatar).into(avatarImage);
             Message mess = new Message(userName,opponentUserNameString,content,avatar);
             messages.add(mess);
             databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
