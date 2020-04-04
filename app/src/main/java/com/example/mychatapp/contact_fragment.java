@@ -26,11 +26,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class contact_fragment extends Fragment {
+public class contact_fragment extends Fragment implements ContactsAdapter.ContactHolder.onItemListener {
     private RecyclerView recyclerView;
     private ArrayList<Contacts> contacts;
     private FloatingActionButton createContact;
     private String currentUserName;
+    private Bundle bundle;
 
     @Nullable
     @Override
@@ -56,37 +57,38 @@ public class contact_fragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        FirebaseFirestore.getInstance().document("User/" + currentUserName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+        FirebaseFirestore.getInstance().document("User/" + currentUserName).get().addOnCompleteListener(task -> {
 
-                DocumentSnapshot documentSnapshot = task.getResult();
-                assert documentSnapshot != null;
-                Map<String, Object> data = documentSnapshot.getData();
-                assert data != null;
-                for (Map.Entry<String, Object> entry : data.entrySet()) {
-                    if (entry.getKey().equals("Contacts")) {
-                        ArrayList<HashMap<String, Object>> dtbContacts = (ArrayList<HashMap<String, Object>>) entry.getValue();
-                        for (HashMap<String, Object> dtb : dtbContacts) {
-                            String avatar = Objects.requireNonNull(dtb.get("avatarImage")).toString();
-                            String phoneNumber = dtb.get("phoneNumber").toString();
-                            String username = Objects.requireNonNull(dtb.get("userName")).toString();
-                            Contacts contact = new Contacts(avatar, phoneNumber, username);
-                            contacts.add(contact);
-                        }
+            DocumentSnapshot documentSnapshot = task.getResult();
+            assert documentSnapshot != null;
+            Map<String, Object> data = documentSnapshot.getData();
+            assert data != null;
+            for (Map.Entry<String, Object> entry : data.entrySet()) {
+                if (entry.getKey().equals("Contacts")) {
+                    ArrayList<HashMap<String, Object>> dtbContacts = (ArrayList<HashMap<String, Object>>) entry.getValue();
+                    for (HashMap<String, Object> dtb : dtbContacts) {
+                        String avatar = Objects.requireNonNull(dtb.get("avatarImage")).toString();
+                        String phoneNumber = dtb.get("phoneNumber").toString();
+                        String username = Objects.requireNonNull(dtb.get("userName")).toString();
+                        Contacts contact = new Contacts(avatar, phoneNumber, username);
+                        contacts.add(contact);
                     }
                 }
-                ContactsAdapter contactsAdapter = new ContactsAdapter(contacts, getContext());
-                recyclerView.setAdapter(contactsAdapter);
             }
+            ContactsAdapter contactsAdapter = new ContactsAdapter(contacts, getContext(),this);
+            recyclerView.setAdapter(contactsAdapter);
         });
-
-//        contacts.add(new Contacts("https://firebasestorage.googleapis.com/v0/b/my-chat-app-4ccd9.appspot.com/o/question-mark-483x335.jpg?alt=media&token=d93882bb-56a3-4fc0-9983-990256c01470"
-//                ,"0834222439"
-//                ,"phucnguyen"));
-
 
         return view;
     }
 
+    @Override
+    public void onClick(int position) {
+        Intent intent = new Intent(getActivity(),chat_activity.class);
+        bundle = new Bundle();
+        bundle.putString("opponentUserName", contacts.get(position).getUserName());
+        bundle.putString("currentUserName",currentUserName);
+        intent.putExtra("bun", bundle);
+        startActivity(intent);
+    }
 }

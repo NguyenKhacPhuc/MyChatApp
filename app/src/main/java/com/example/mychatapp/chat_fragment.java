@@ -52,8 +52,6 @@ public class chat_fragment extends Fragment implements ChatsAdapter.ChatHolder.o
             for (Map.Entry<String,Object> data: allData.entrySet()){
                     if(data.getKey().equals("Chat History")) {
                         try {
-
-
                             HashMap<String, Object> messagesBox = (HashMap<String, Object>) data.getValue();
                             AtomicInteger count = new AtomicInteger();
                             messagesBox.forEach((k, v) -> {
