@@ -4,8 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +38,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatHolder> 
     public void onBindViewHolder(@NonNull ChatHolder holder, int position) {
             holder.username.setText(chats.get(position).getUsername());
             holder.lastMessage.setText(chats.get(position).getLastMessage());
-            Picasso.get().load(chats.get(position).getAvatar()).into(holder.avatar);
+            Picasso.with(context).load(chats.get(position).getAvatar()).into(holder.avatar);
 
     }
 

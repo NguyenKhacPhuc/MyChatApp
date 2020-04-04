@@ -35,7 +35,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.UserVi
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
             holder.name.setText(contacts.get(position).getUserName());
             holder.number.setText(contacts.get(position).getPhoneNumber());
-            Picasso.get().load(contacts.get(position).getAvatarImage()).into(holder.avatar);
+            Picasso.with(context).load(contacts.get(position).getAvatarImage()).into(holder.avatar);
     }
 
     @Override
