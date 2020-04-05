@@ -80,6 +80,9 @@ public class SignUp extends AppCompatActivity {
                     databaseReference = FirebaseFirestore.getInstance().document("User/"+currentuserName);
                     databaseReference.set(user).addOnSuccessListener(aVoid -> {
                         Log.d("Tag1", "Save Successfully");
+                        Intent intent = new Intent(SignUp.this,LogIn.class);
+                        startActivity(intent);
+
                     }).addOnFailureListener(e -> {
                         Log.d("Tag2", "Save failed");
                     });

@@ -109,6 +109,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_up_password_lable"
         android:hint="Enter your password"
+        android:password="true"
         android:layout_marginLeft="30dp"/>
         <TextView
             android:id="@+id/sign_up_reconfirm_password_lable"
@@ -126,6 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sign_up_reconfirm_password_lable"
         android:hint="Reconfirm your password"
+        android:password="true"
         android:layout_marginLeft="30dp"/>
         <Button
             android:id="@+id/sign_up_btn"
