@@ -39,7 +39,6 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ChatHolder> 
             holder.username.setText(chats.get(position).getUsername());
             holder.lastMessage.setText(chats.get(position).getLastMessage());
             Picasso.with(context).load(chats.get(position).getAvatar()).into(holder.avatar);
-
     }
 
     @Override

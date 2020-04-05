@@ -25,7 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Objects;
 
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -104,8 +104,8 @@ public class chat_activity extends AppCompatActivity {
             DocumentSnapshot documentSnapshot = task.getResult();
             assert documentSnapshot != null;
             String avatar = documentSnapshot.getString("Avatar");
-            Picasso.with(this).load(avatar).into(avatarImage);
-            Message mess = new Message(userName,opponentUserNameString,content,avatar);
+            Picasso.with(chat_activity.this).load(avatar).into(avatarImage);
+            Message mess = new Message(userName,opponentUserNameString,content);
             messages.add(mess);
             databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
             databaseReference.update("Chat History."+opponentUserNameString, FieldValue.arrayUnion(mess));
@@ -135,17 +135,21 @@ public class chat_activity extends AppCompatActivity {
         String sender = documentSnapshot.getString("sender");
         String receiver = documentSnapshot.getString("receiver");
         String message = documentSnapshot.getString("message");
-        String avatar = documentSnapshot.getString("receiverAvatar");
         if(userName.equals(sender) && opponentUserNameString.equals(receiver)) {
-            Message mess = new Message(sender, receiver, message);
-            realtimeMess.add(mess);
+            FirebaseFirestore.getInstance().document("User/"+userName).get().addOnCompleteListener(task->{
+                String avatar = Objects.requireNonNull(task.getResult()).getString("Avatar");
+                Message mess = new Message(sender, receiver, message,avatar);
+                realtimeMess.add(mess);
+            });
+
         }else if(userName.equals(receiver) && opponentUserNameString.equals(sender)){
-            Message mess = new Message(sender, receiver, message,avatar);
-            realtimeMess.add(mess);
+            FirebaseFirestore.getInstance().document("User/"+opponentUserNameString).get().addOnCompleteListener(task->{
+                String avatar = task.getResult().getString("Avatar");
+                Message mess = new Message(sender, receiver, message,avatar);
+                realtimeMess.add(mess);
+            });
         }
         messageAdapter = new MessageAdapter(getApplicationContext(),realtimeMess,userName,opponentUserNameString);
         chatContent.setAdapter(messageAdapter);
     }
-
-
 }
