@@ -44,43 +44,44 @@ public class LogIn extends AppCompatActivity {
         initView();
         create.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_create_black_24dp,0);
 //
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String usernameInput = username.getText().toString();
-                String userPasswordInput = password.getText().toString();
-                try {
-                    String hexPass = toHexString(userPasswordInput);
+        logInBtn.setOnClickListener(v -> {
+            String usernameInput = username.getText().toString();
+            String userPasswordInput = password.getText().toString();
+            try {
+                String hexPass = toHexString(userPasswordInput);
 
-                if(usernameInput.isEmpty() ){
-                    username.requestFocus();
-                    username.setError("Please enter username");
-                }else if(userPasswordInput.isEmpty()){
-                    password.requestFocus();
-                    password.setError("Please enter the password");
-                }else if(usernameInput.isEmpty() && userPasswordInput.isEmpty()){
-                   Toast.makeText(LogIn.this, "Please enter the fields in order to log in",Toast.LENGTH_SHORT).show();
-                }else{
-                    databaseReference = FirebaseFirestore.getInstance().document("User/"+username.getText().toString());
-                    databaseReference.get().addOnSuccessListener(documentSnapshot -> {
-                        if(documentSnapshot.exists()){
-                            String pass = documentSnapshot.getString("Password");
-                            if(hexPass.equals(pass)){
-                                Intent intent = new Intent(LogIn.this, MainActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putString("currentUserName",username.getText().toString());
-                                intent.putExtra("bunUserName",bundle);
-                                startActivity(intent);
-                            }
+            if(usernameInput.isEmpty() ){
+                username.requestFocus();
+                username.setError("Please enter username");
+            }else if(userPasswordInput.isEmpty()){
+                password.requestFocus();
+                password.setError("Please enter the password");
+            }else if(usernameInput.isEmpty() && userPasswordInput.isEmpty()){
+               Toast.makeText(LogIn.this, "Please enter the fields in order to log in",Toast.LENGTH_SHORT).show();
+            }else{
+                databaseReference = FirebaseFirestore.getInstance().document("User/"+username.getText().toString());
+                databaseReference.get().addOnSuccessListener(documentSnapshot -> {
+                    if(documentSnapshot.exists()){
+                        String pass = documentSnapshot.getString("Password");
+                        if(hexPass.equals(pass)){
+                            Intent intent = new Intent(LogIn.this, MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("currentUserName",username.getText().toString());
+                            intent.putExtra("bunUserName",bundle);
+                            startActivity(intent);
+                        }else{
+                            password.requestFocus();
+                            password.setError("Wrong password");
+                            password.setText("");
                         }
-                        else {
-                            Toast.makeText(LogIn.this,"Account is not exist",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
+                    }
+                    else {
+                        Toast.makeText(LogIn.this,"Account is not exist",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
             }
         });
         create.setOnClickListener(new View.OnClickListener() {
