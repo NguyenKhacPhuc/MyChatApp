@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class contact_fragment extends Fragment implements ContactsAdapter.Contac
                     ArrayList<HashMap<String, Object>> dtbContacts = (ArrayList<HashMap<String, Object>>) entry.getValue();
                     for (HashMap<String, Object> dtb : dtbContacts) {
                         String avatar = Objects.requireNonNull(dtb.get("avatarImage")).toString();
-                        String phoneNumber = dtb.get("phoneNumber").toString();
+                        String phoneNumber = Objects.requireNonNull(dtb.get("phoneNumber")).toString();
                         String username = Objects.requireNonNull(dtb.get("userName")).toString();
                         Contacts contact = new Contacts(avatar, phoneNumber, username);
                         contacts.add(contact);
@@ -85,6 +86,10 @@ public class contact_fragment extends Fragment implements ContactsAdapter.Contac
     @Override
     public void onClick(int position) {
         Intent intent = new Intent(getActivity(),chat_activity.class);
+        Message  mess = new Message(currentUserName,contacts.get(position).getUserName(),"",contacts.get(position).getAvatarImage());
+        FirebaseFirestore.getInstance().document("User/"+currentUserName).update("Chat History."
+                +contacts.get(position)
+                .getUserName(), FieldValue.arrayUnion(mess));
         bundle = new Bundle();
         bundle.putString("opponentUserName", contacts.get(position).getUserName());
         bundle.putString("currentUserName",currentUserName);

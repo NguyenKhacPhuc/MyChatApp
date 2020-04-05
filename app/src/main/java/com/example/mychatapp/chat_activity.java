@@ -144,7 +144,7 @@ public class chat_activity extends AppCompatActivity {
 
         }else if(userName.equals(receiver) && opponentUserNameString.equals(sender)){
             FirebaseFirestore.getInstance().document("User/"+opponentUserNameString).get().addOnCompleteListener(task->{
-                String avatar = task.getResult().getString("Avatar");
+                String avatar = Objects.requireNonNull(task.getResult()).getString("Avatar");
                 Message mess = new Message(sender, receiver, message,avatar);
                 realtimeMess.add(mess);
             });
