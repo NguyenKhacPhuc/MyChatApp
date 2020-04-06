@@ -11,10 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class setting_fragment extends Fragment {
     private TextView setProfilePhoto;
     private TextView setUserName;
     private TextView setPhoneNumber;
+    private String username;
+    private CircleImageView userAvatar;
+    private TextView showPN;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,6 +31,10 @@ public class setting_fragment extends Fragment {
         setProfilePhoto = (TextView) v.findViewById(R.id.set_profile_photo);
         setUserName = (TextView) v.findViewById(R.id.set_user_name);
         setPhoneNumber = (TextView) v.findViewById(R.id.set_phoneNumber);
+        userAvatar = (CircleImageView) v.findViewById(R.id.setting_avatar);
+        showPN = (TextView) v.findViewById(R.id.show_phone_number) ;
+        assert getArguments() != null;
+        username = getArguments().getString("currentUserName");
         setProfilePhoto.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.chevron_right,0);
         setUserName.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.chevron_right,0);
         setPhoneNumber.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.chevron_right,0);
@@ -44,6 +57,20 @@ public class setting_fragment extends Fragment {
             setProfilePhoto.setBackgroundColor(Color.GRAY);
             //TODO
         });
+        FirebaseFirestore.getInstance().document("User/"+username).get().addOnCompleteListener(task -> {
+            DocumentSnapshot documentSnapshot = task.getResult();
+            assert documentSnapshot != null;
+            String avatar = documentSnapshot.getString("Avatar");
+            String phoneNumber = documentSnapshot.getString("Phone number");
+            Picasso.with(getContext()).load(avatar).into(userAvatar);
+            showPN.setText(phoneNumber);
+        });
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
     }
 }

@@ -53,10 +53,15 @@ public class MainActivity extends AppCompatActivity {
                 chosenFrag.setArguments(bundleChat);
                 break;
             case R.id.call:
+
                 chosenFrag = new call_fragment();
+
                 break;
             case R.id.setting:
+                Bundle bundleSetting = new Bundle();
+                bundleSetting.putString("currentUserName",currentUserName);
                 chosenFrag = new setting_fragment();
+                chosenFrag.setArguments(bundleSetting);
                 break;
             default:
                 break;
