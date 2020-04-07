@@ -81,6 +81,7 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
                     if(additionPhoneNumber.equals(phoneNumber)) {
                         Contacts newContacts = new Contacts(avatar, phoneNumber, additionUserName);
                         addContact(newContacts);
+                        dismiss();
                     }
                     else{
                         newPhoneNumber.requestFocus();

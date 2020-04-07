@@ -78,8 +78,8 @@ public class contact_fragment extends Fragment implements ContactsAdapter.Contac
             }
             ContactsAdapter contactsAdapter = new ContactsAdapter(contacts, getContext(),this);
             recyclerView.setAdapter(contactsAdapter);
-        });
 
+        });
         return view;
     }
 
