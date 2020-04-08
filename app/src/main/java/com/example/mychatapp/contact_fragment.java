@@ -85,11 +85,15 @@ public class contact_fragment extends Fragment implements ContactsAdapter.Contac
 
     @Override
     public void onClick(int position) {
+        ArrayList<Message> box = new ArrayList<>();
+        HashMap<String,Object> boxes = new HashMap<>();
+        boxes.put("Box", box);
         Intent intent = new Intent(getActivity(),chat_activity.class);
         Message  mess = new Message(currentUserName,contacts.get(position).getUserName(),"",contacts.get(position).getAvatarImage());
         FirebaseFirestore.getInstance().document("User/"+currentUserName).update("Chat History."
                 +contacts.get(position)
                 .getUserName(), FieldValue.arrayUnion(mess));
+        FirebaseFirestore.getInstance().document("ChatBoxes/"+currentUserName+"-"+contacts.get(position).getUserName()).set(boxes);
         bundle = new Bundle();
         bundle.putString("opponentUserName", contacts.get(position).getUserName());
         bundle.putString("currentUserName",currentUserName);

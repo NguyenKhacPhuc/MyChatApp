@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -72,6 +73,22 @@ public class chat_activity extends AppCompatActivity {
             }
             inputMessage.requestFocus();
         });
+        FirebaseFirestore.getInstance().document("ChatBoxes"+userName+"-"+opponentUserNameString)
+                .get()
+                .addOnCompleteListener(task ->{
+            DocumentSnapshot documentSnapshot = task.getResult();
+                    assert documentSnapshot != null;
+                    Map<String, Object> data = documentSnapshot.getData();
+                    assert data != null;
+                    for(Map.Entry<String,Object> specificData : data.entrySet()){
+                        if(specificData.getKey().equals("Box")){
+                            ArrayList<HashMap<String, Object>> dtbBox = (ArrayList<HashMap<String, Object>>) specificData.getValue();
+                            for(HashMap<String,Object> oldMessages: dtbBox){
+                                    parseData(oldMessages);
+                            }
+                        }
+            }
+        });
         FirebaseFirestore.getInstance().document("Chat/"+userName).addSnapshotListener((documentSnapshot, e) -> {
             assert documentSnapshot != null;
             parseData(documentSnapshot);
@@ -110,6 +127,9 @@ public class chat_activity extends AppCompatActivity {
             databaseReference = FirebaseFirestore.getInstance().document("User/"+userName);
             databaseReference.update("Chat History."+opponentUserNameString, FieldValue.arrayUnion(mess));
             FirebaseFirestore.getInstance().document("Chat/"+userName).set(mess);
+            FirebaseFirestore.getInstance()
+                    .document("ChatBoxes/"+userName+"-"+opponentUserNameString)
+                    .update("Box",FieldValue.arrayUnion(mess));
         });
 
     }
@@ -135,6 +155,27 @@ public class chat_activity extends AppCompatActivity {
         String sender = documentSnapshot.getString("sender");
         String receiver = documentSnapshot.getString("receiver");
         String message = documentSnapshot.getString("message");
+        if(userName.equals(sender) && opponentUserNameString.equals(receiver)) {
+            FirebaseFirestore.getInstance().document("User/"+userName).get().addOnCompleteListener(task->{
+                String avatar = Objects.requireNonNull(task.getResult()).getString("Avatar");
+                Message mess = new Message(sender, receiver, message,avatar);
+                realtimeMess.add(mess);
+            });
+
+        }else if(userName.equals(receiver) && opponentUserNameString.equals(sender)){
+            FirebaseFirestore.getInstance().document("User/"+opponentUserNameString).get().addOnCompleteListener(task->{
+                String avatar = Objects.requireNonNull(task.getResult()).getString("Avatar");
+                Message mess = new Message(sender, receiver, message,avatar);
+                realtimeMess.add(mess);
+            });
+        }
+        messageAdapter = new MessageAdapter(getApplicationContext(),realtimeMess,userName,opponentUserNameString);
+        chatContent.setAdapter(messageAdapter);
+    }
+    private void parseData(HashMap<String,Object> data){
+        String sender = Objects.requireNonNull(data.get("sender")).toString();
+        String receiver = Objects.requireNonNull(data.get("receiver")).toString();
+        String message = Objects.requireNonNull(data.get("message")).toString();
         if(userName.equals(sender) && opponentUserNameString.equals(receiver)) {
             FirebaseFirestore.getInstance().document("User/"+userName).get().addOnCompleteListener(task->{
                 String avatar = Objects.requireNonNull(task.getResult()).getString("Avatar");
