@@ -78,8 +78,9 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
                 FirebaseFirestore.getInstance().document("User/"+additionUserName).get().addOnSuccessListener(documentSnapshot -> {
                     String avatar = documentSnapshot.getString("Avatar");
                     String phoneNumber = documentSnapshot.getString("Phone number");
+                    String username = documentSnapshot.getString("Username");
                     if(additionPhoneNumber.equals(phoneNumber)) {
-                        Contacts newContacts = new Contacts(avatar, phoneNumber, additionUserName);
+                        Contacts newContacts = new Contacts(avatar, phoneNumber, username);
                         addContact(newContacts);
                         dismiss();
                     }
@@ -94,7 +95,7 @@ public class BottomAddContactSheet extends BottomSheetDialogFragment {
         }
         if(!check) {
             newUserName.requestFocus();
-            newUserName.setError("Username is not exist");
+            newUserName.setError("ID is not exist");
         }
     }
 
