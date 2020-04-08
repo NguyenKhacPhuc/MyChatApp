@@ -52,7 +52,9 @@ public class setting_fragment extends Fragment {
         //event user click set phone number
         setPhoneNumber.setOnClickListener(v1 -> {
             BottomSetPhoneNumber bottomSetPhoneNumber = new BottomSetPhoneNumber();
-
+            Bundle bundle = new Bundle();
+            bundle.putString("username",username);
+            bottomSetPhoneNumber.setArguments(bundle);
             assert getFragmentManager() != null;
             bottomSetPhoneNumber.show(getFragmentManager(),"change phone number");
         });
