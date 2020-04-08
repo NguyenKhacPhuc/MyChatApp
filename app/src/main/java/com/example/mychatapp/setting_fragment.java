@@ -42,19 +42,17 @@ public class setting_fragment extends Fragment {
         setPhoneNumber.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.chevron_right,0);
         //event user click set username
         setUserName.setOnClickListener(v12 -> {
-            setUserName.setBackgroundColor(Color.GRAY);
             BottomSetName bottomSetName = new BottomSetName();
-
+            Bundle bundel = new Bundle();
+            bundel.putString("username",username);
+            bottomSetName.setArguments(bundel);
             assert getFragmentManager() != null;
             bottomSetName.show(getFragmentManager(),"Edit username");
         });
         //event user click set phone number
         setPhoneNumber.setOnClickListener(v1 -> {
-            setPhoneNumber.setBackgroundColor(Color.GRAY);
             BottomSetPhoneNumber bottomSetPhoneNumber = new BottomSetPhoneNumber();
-            Bundle bundel = new Bundle();
-            bundel.putString("username",username);
-            bottomSetPhoneNumber.setArguments(bundel);
+
             assert getFragmentManager() != null;
             bottomSetPhoneNumber.show(getFragmentManager(),"change phone number");
         });
