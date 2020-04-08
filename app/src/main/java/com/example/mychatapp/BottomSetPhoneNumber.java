@@ -14,7 +14,7 @@ public class BottomSetPhoneNumber extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.bottm_sheet_set_phonenumber,container,false);
+        View v = inflater.inflate(R.layout.bottom_sheet_set_phonenumber,container,false);
         return v;
     }
 }
