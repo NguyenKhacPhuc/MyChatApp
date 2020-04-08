@@ -43,19 +43,20 @@ public class setting_fragment extends Fragment {
         //event user click set username
         setUserName.setOnClickListener(v12 -> {
             setUserName.setBackgroundColor(Color.GRAY);
-            BottomSetPhoneNumber bottomSetPhoneNumber = new BottomSetPhoneNumber();
+            BottomSetName bottomSetName = new BottomSetName();
+
             assert getFragmentManager() != null;
-            bottomSetPhoneNumber.show(getFragmentManager(),"Edit username");
+            bottomSetName.show(getFragmentManager(),"Edit username");
         });
         //event user click set phone number
         setPhoneNumber.setOnClickListener(v1 -> {
             setPhoneNumber.setBackgroundColor(Color.GRAY);
-            BottomSetName bottomSetName = new BottomSetName();
+            BottomSetPhoneNumber bottomSetPhoneNumber = new BottomSetPhoneNumber();
             Bundle bundel = new Bundle();
             bundel.putString("username",username);
-            bottomSetName.setArguments(bundel);
+            bottomSetPhoneNumber.setArguments(bundel);
             assert getFragmentManager() != null;
-            bottomSetName.show(getFragmentManager(),"change phone number");
+            bottomSetPhoneNumber.show(getFragmentManager(),"change phone number");
         });
         //event user click set profile photo
         setProfilePhoto.setOnClickListener(vProfile ->{

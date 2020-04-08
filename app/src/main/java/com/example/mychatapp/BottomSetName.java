@@ -1,6 +1,7 @@
 package com.example.mychatapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 public class BottomSetName extends BottomSheetDialogFragment {
     private Button done;
@@ -34,7 +38,17 @@ public class BottomSetName extends BottomSheetDialogFragment {
         done.setOnClickListener(clickDone ->{
             String changesUsername = changedUsername.getText().toString();
             FirebaseFirestore.getInstance().document("User/"+currentUserName).update("Username",changesUsername);
-
+            FirebaseFirestore.getInstance().document("User/"+currentUserName).get().addOnCompleteListener(v2->{
+                FirebaseFirestore.getInstance().document("User/"+changesUsername).set(Objects.requireNonNull(v2.getResult().getData()));
+            });
+            FirebaseFirestore.getInstance().document("User/"+currentUserName).delete();
+            FirebaseFirestore.getInstance().document("Chat/"+currentUserName).get().addOnCompleteListener(v3->{
+                FirebaseFirestore.getInstance().document("Chat/"+changesUsername)
+                        .set(Objects.requireNonNull(Objects.requireNonNull(v3.getResult()).getData()));
+            });
+            FirebaseFirestore.getInstance().document("Chat/"+currentUserName).delete();
+            FirebaseFirestore.getInstance().document("UserNameList/UList")
+                    .update("ListOfUserName", FieldValue.arrayUnion(changesUsername),FieldValue.arrayRemove(currentUserName));
         });
 
         return v;
